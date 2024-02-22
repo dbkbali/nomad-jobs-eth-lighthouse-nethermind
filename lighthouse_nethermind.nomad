@@ -73,9 +73,11 @@ job "eth-lighthouse-nethermind" {
           "--JsonRpc.WebSocketsPort=${NOMAD_PORT_rpcN}",
           "--JsonRpc.EngineHost=0.0.0.0",
           "--JsonRpc.EnginePort=${NOMAD_PORT_authRpc}",
-          // "--JsonRpc.EngineEnabledModules=[net,eth,subscribe,engine,web3,client]",
+          "--JsonRpc.EnabledModules=[Admin,Net,Eth,Subscribe,Engine,Web3,Client]",
+          "--JsonRpc.EngineEnabledModules=[Net,Eth,Subscribe,Engine,Web3,Client]",
           "--Metrics.ExposePort=${NOMAD_PORT_promN}",
           "--JsonRpc.JwtSecretFile=/holesky/.eth/jwt.hex"
+          // "--log=DEBUG"
         ]
 
         ports = ["p2p", "rpcN", "authRpc", "promN"]
@@ -153,13 +155,15 @@ job "eth-lighthouse-nethermind" {
           "--port=${NOMAD_PORT_p2pC}",
           "--quic-port=${NOMAD_PORT_p2pu}",
           "--http",
-          // "--http-address=${attr.unique.network.ip-address}",
+          // "--http-allow-origin=*",
+          "--http-address=0.0.0.0",
           "--http-port=${NOMAD_PORT_http}",
           "--metrics",
           "--metrics-address=0.0.0.0",
           "--metrics-port=${NOMAD_PORT_promL}",
           "--purge-db",
-          "--checkpoint-sync-url=https://checkpoint-sync.holesky.ethpandaops.io",
+          "--debug-level=debug",
+          "--checkpoint-sync-url=https://checkpoint-sync.holesky.ethpandaops.io"
         ]
 
         ports = ["p2pC", "p2pu", "http", "promL"]
